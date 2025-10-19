@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #eee;
+  color: #222;
+}
+.profile-pic {
+  border-radius: 50%;
+  border: 2px solid #444;
+  width: 3em;
+  height: 3em;
+  float: right;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.column {
+  flex: 1;
+  padding: 2rem;
+}
+.homework-card {
+  border: 1px solid #666;
+  background-color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.6rem;
+}
+.homework-card.is-done {
+  background-color: lightgreen !important;
+  color: #222 !important;
+}
+.homework-card.is-due-soon {
+  background-color: tomato;
+}
+.homework-card.is-late {
+  background-color: darkred;
+  color: white;
+}

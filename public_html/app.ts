@@ -48,9 +48,9 @@ function buildHomework(work: Homework): string {
         <h3>${work.subject}</h3>
         <p>Due <time class="due" datetime="${work.dueDate.toISOString()}"></time> (${work.dueDate.toLocaleDateString()}) [${
     work.status
-  }]</p>
+  }]</p><div class="instructions">
         ${work.detail?.instructions ?? ""}
-    </div>`;
+    </div></div>`;
 }
 
 let dueDateUpdate: NodeJS.Timeout | null = null;

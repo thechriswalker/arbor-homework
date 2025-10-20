@@ -46,6 +46,15 @@ const homeworkSanitizerOptions = {
     img: ["src", "alt"],
   },
   allowedSchemes: sanitizeHTML.defaults.allowedSchemes.concat(["data"]),
+  exclusiveFilter: (frame: any) => {
+    // if the text is ostensibly empty, we should remove it
+    // trim() doesn't remove \u8203 (zero-width-space)... :(
+    const text = frame.text.replaceAll(
+      /(^[\s\t\v\r\n\f\u200b\u00a0\u8203]+|[\s\t\v\r\n\f\u200b\u00a0\u8203]+$)/g,
+      ""
+    );
+    return text.length === 0;
+  },
 };
 function sanitize(dirty: string) {
   return sanitizeHTML(dirty, homeworkSanitizerOptions);

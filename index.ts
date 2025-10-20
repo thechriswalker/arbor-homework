@@ -41,6 +41,7 @@ const server = Bun.serve({
     "/*": () =>
       Response.json({ status: 404, error: "not found" }, { status: 404 }),
   },
+  development: process.env.DEV === "true",
 });
 
 console.log(`Server listening at: http://localhost:${server.port}/`);

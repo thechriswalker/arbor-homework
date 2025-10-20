@@ -75,6 +75,7 @@ function doDueDateUpdate() {
     } else if (daysTilDue <= 2) {
       card.classList.add("is-due-soon");
     }
-    el.textContent = relTime.format(daysTilDue, "days");
+    el.textContent =
+      daysTilDue === 0 ? "today" : relTime.format(daysTilDue, "days");
   });
 }

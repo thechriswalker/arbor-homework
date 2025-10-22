@@ -31,6 +31,7 @@ async function createInitialTables() {
         CREATE TABLE IF NOT EXISTS api_cache (
             id TEXT PRIMARY_KEY NOT NULL,
             requested_at DATETIME NOT NULL,
+            expires_at DATETIME NOT NULL,
             status INTEGER NOT NULL,
             response TEXT NOT NULL
         );

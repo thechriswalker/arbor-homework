@@ -75,7 +75,19 @@ function doDueDateUpdate() {
     } else if (daysTilDue <= 2) {
       card.classList.add("is-due-soon");
     }
-    el.textContent =
-      daysTilDue === 0 ? "today" : relTime.format(daysTilDue, "days");
+    switch (daysTilDue) {
+      case 0:
+        el.textContent = "TODAY!";
+        break;
+      case 1:
+        el.textContent = "tomorrow";
+        break;
+      case -1:
+        el.textContent = "yesterday";
+        break;
+      default:
+        el.textContent = relTime.format(daysTilDue, "days");
+        break;
+    }
   });
 }

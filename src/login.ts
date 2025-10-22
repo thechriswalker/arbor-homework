@@ -3,8 +3,8 @@ import { sql } from "./db";
 const CONSERVATIVE_SESSION_EXPIRY = 30 * 60_000; // 30 minutes
 
 export class SessionExpiredError extends Error {
-  constructor() {
-    super("session expired");
+  constructor(msg: string) {
+    super("session expired: " + msg);
   }
 }
 

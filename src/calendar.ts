@@ -34,8 +34,8 @@
 // 2 months, should be enough to get "week_a" and "week_b", as well as the current week.
 // We should have a generic week A/B listing as well as the current week.
 
-import { createAPIFunction } from "./api";
-
+import { createAPIFunction } from "./arbor";
+import type { Week } from "./types";
 // the UI pulls the current week by default startDate = monday, endDate = friday
 // Then we get a result with the week and 3 weeks either side.
 // the data is in an HTML table... in each week's entry...
@@ -86,12 +86,6 @@ function getCurrentWeek() {
   };
 }
 
-export type Week = {
-  id: string;
-  name: string;
-  days: Array<Array<string>>;
-};
-
 type ResponsePage = {
   start: string;
   end: string;
@@ -101,11 +95,6 @@ type ResponsePage = {
 
 function extractCalendarData(obj: any) {
   const pages = obj.items?.[0]?.fields?.response?.value?.pages ?? [];
-  const timings: Week = {
-    id: "timing",
-    name: "Times",
-    days: [],
-  };
   const weekA: Week = {
     id: "week_a",
     name: "Week A",
@@ -147,7 +136,6 @@ function extractCalendarData(obj: any) {
     }
     if (needWeekA) {
       weekA.days.push(...days);
-      timings.days.push(...days.timings);
     }
     if (needWeekB) {
       weekB.days.push(...days);
@@ -162,7 +150,7 @@ function extractCalendarData(obj: any) {
       thisWeek.days.push(...days);
     }
   });
-  return [timings, weekA, weekB, thisWeek];
+  return [thisWeek, weekA, weekB];
 }
 
 // sample:
@@ -182,28 +170,38 @@ function extractCalendarData(obj: any) {
 // </div>
 const eventRe = /<b class="title" data-eventid="\d+">([^<]+)<\/b>/g;
 const timingRe = /<span  data-eventid="\d+">(\d\d:\d\d-\d\d:\d\d)<\/span>/g;
-type timetableInfo = Array<Array<string>> & { timings: Array<Array<string>> };
+const tutorMatch = /\d+: ([0-9A-Z]{4})/; // e.g. "9: 9HAN"
+const subjectMatch = /([^:]+):[^:]+:\s+(.*)/; // e.g. "Science: Yr 9: 9A/Sc2"
+type timetableInfo = Week["days"];
 function parseTimetable(html: string): timetableInfo {
   const days: timetableInfo = [] as any;
-  days.timings = [];
   const rows = html.split("</tr>");
   // first row should have the days of the week
-  if (!/Monday.*Tuesday.*Wednesday.*Thursday.*Friday/.test(rows?.[0])) {
+  if (!/Monday.*Tuesday.*Wednesday.*Thursday.*Friday/.test(rows?.[0]!)) {
     return days; // bail early.
   }
   // there should be 7 cells, one for each week day and 2 wrappers.
-  const cells = rows?.[1]?.split("</td>");
+  const cells = rows?.[1]?.split("</td>") ?? [];
 
   if (cells.length !== 7) {
     return days;
   }
   cells.slice(1, -1).forEach((x: string, i: number) => {
     // i is the day, x contains all periods that day.
-    const periods = [...x.matchAll(eventRe)].map((y) => y[1]);
-    if (periods.length > 0 && days.timings.length === 0) {
-      days.timings.push([...x.matchAll(timingRe)].map((y) => y[1]));
-    }
-    days[i] = periods;
+    const periods = [...x.matchAll(eventRe)].map((y) => y[1]!);
+    const timings = [...x.matchAll(timingRe)].map((y) => y[1]!);
+    days[i] = periods.map((p, j) => {
+      // try and match tutor or subject, failing that, dump everything in subject.
+      let m = p.match(subjectMatch);
+      if (m) {
+        return { subject: m[1]!, group: m[2]!, timing: timings[j]! };
+      }
+      m = p.match(tutorMatch);
+      if (m) {
+        return { subject: "Tutor", group: m[1]!, timing: timings[j]! };
+      }
+      return { subject: p, group: "", timing: timings[j]! };
+    });
   });
 
   return days;

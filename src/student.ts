@@ -1,6 +1,6 @@
 import sanitize from "sanitize-html";
-import { createAPIFunction } from "./api";
-
+import { createAPIFunction } from "./arbor";
+import type { StudentInfo } from "./types";
 // we can acache this a long time!
 const STUDENT_INFO_CACHE = 90 * 86400_000;
 
@@ -10,12 +10,6 @@ export const getStudentInfo = createAPIFunction(
   extractStudentInfo,
   STUDENT_INFO_CACHE
 );
-
-type StudentInfo = {
-  name: string;
-  img: string;
-  form: string;
-};
 
 function extractStudentInfo(resp: any): StudentInfo {
   let student: StudentInfo | null = null;

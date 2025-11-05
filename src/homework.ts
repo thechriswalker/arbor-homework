@@ -1,21 +1,11 @@
-import { createAPIFunction } from "./api";
+import { createAPIFunction } from "./arbor";
 import sanitizeHTML from "sanitize-html";
-
+import type { Homework, HomeworkDetail } from "./types";
 const titles = [
   "Overdue Assignments",
   "Submitted Assignments",
   "Assignments that are due",
 ];
-
-export type Homework = {
-  id: string;
-  //url: string;
-  isDone: boolean;
-  subject: string;
-  status: string;
-  dueDate: Date;
-  detail: HomeworkDetail | null;
-};
 
 // lets use a regex! ;)
 const reParseHomeworkHTML =
@@ -30,7 +20,7 @@ function parseHomework(line: string): { subject: string; dueDate: Date } {
   const [_, subject, day, month, year] = matches;
   const dueDate = new Date(`${year} ${month} ${day} 00:00:00 UTC`);
 
-  return { subject: sanitize(subject), dueDate };
+  return { subject: sanitize(subject!), dueDate };
 }
 // https://cullompton-community-college.uk.arbor.education/guardians/home-ui/dashboard/student-id/4226?format=javascript
 export const getHomework = createAPIFunction(
@@ -114,9 +104,6 @@ export function extractHomework(resp: any): Array<Homework> {
 // NB access tokens allow access to all homework, so I could literally scrape all of them.
 // the use incrementing numerical ids.
 
-type HomeworkDetail = {
-  instructions: string;
-};
 const HOMEWORK_DETAIL_CACHE_DURATION = 7 * 86400_000;
 export const getHomeworkDetail = createAPIFunction(
   (homework: Homework) =>

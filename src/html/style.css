@@ -133,6 +133,7 @@ header > ul {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.6rem;
+  max-width: 64rem;
 }
 .homework-card.is-done {
   background-color: lightgreen !important;

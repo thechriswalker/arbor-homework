@@ -242,7 +242,7 @@ header > ul {
 .timetable {
   display: grid;
   width: 100%;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, minmax(8em, 1fr));
   gap: 0.25rem;
 }
 .timetable div {
@@ -250,6 +250,7 @@ header > ul {
   border-radius: 0.25rem;
   background: #fff;
   padding: 0.25rem;
+  text-align: center;
 }
 
 .timetable .subject {

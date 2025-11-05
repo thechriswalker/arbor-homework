@@ -4,8 +4,12 @@ import Header from "./components/Header.tsx";
 
 import Homework from "./components/homework/Homework.tsx";
 import Timetable from "./components/timetable/Timetable.tsx";
+import { useEffect } from "preact/hooks";
 
 function Home() {
+  useEffect(() => {
+    window.location.href = "/homework";
+  });
   return (
     <ul>
       <li>

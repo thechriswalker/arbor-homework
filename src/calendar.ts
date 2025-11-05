@@ -69,8 +69,10 @@ export const getCalendarAndTimetable = createAPIFunction(
 );
 
 function getCurrentWeek() {
+  let endDate = new Date();
+  // endDate = new Date("2025-11-23T12:00:00Z"); // for testing
+
   // find next friday and work back to monday.
-  let endDate = new Date(); //Date.now();  + 7 * 86400_000);
   while (endDate.getDay() !== 5) {
     // I hate DST and all that crap, so lets do this in 6 hour chunks...
     endDate = new Date(endDate.getTime() + 6 * 3600_000);

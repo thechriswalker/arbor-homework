@@ -75,26 +75,35 @@ function Calendar({ week }: { week: Week }) {
   // but we want to iterate periods for each day.
   const maxPeriods = week.days.reduce((acc, day) => {
     return Math.max(acc, day.length);
-  }, 0);
-  const today = new Date().getDay();
+  }, 1); // 1 so we have a minimum of 1 row
+  const now = new Date();
+  const today = now.getDay();
+  let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  if (week.id === "current") {
+    days = days.map((x, i) => {
+      const day = i + 1; // JS days are offset by 1.
+      const date = new Date(
+        now.getTime() + (today - day) * 86400_000
+      ).toLocaleDateString();
+      return x + " (" + date + ")";
+    });
+  }
   return (
-    <div class={"timetable today-" + today}>
-      <h3>Monday</h3>
-      <h3>Tuesday</h3>
-      <h3>Wednesday</h3>
-      <h3>Thursday</h3>
-      <h3>Friday</h3>
-
-      {Array.from({ length: maxPeriods }).map((_, i) => {
+    <div class={cx("timetable", "today-" + today, "week-" + week.id)}>
+      {days.map((label) => (
+        <h3>{label}</h3>
+      ))}
+      {days.map((_, i) => {
         return (
           <>
             {week.days.map((day, j) => {
               // if the day has the period add it, otherwise add an empty cell
               // class is day- (j+1) because days start on sunday in JS, and monday here.
               const data = day[i];
+              const empty = !data && day.length > 0;
               return (
-                <div class={cx("day-" + (j + 1), { empty: !data })}>
-                  {data && (
+                <div class={cx("day-" + (j + 1), { empty })}>
+                  {data ? (
                     <>
                       <p
                         class="subject"
@@ -103,6 +112,8 @@ function Calendar({ week }: { week: Week }) {
                       <p class="group">{data.group}</p>
                       <p class="timing">{data.timing}</p>
                     </>
+                  ) : (
+                    <p class="subject">Nothing ;)</p>
                   )}
                 </div>
               );

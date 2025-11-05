@@ -245,7 +245,6 @@ header > ul {
 
 .timetable {
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(5, minmax(8em, 1fr));
   gap: 0.25rem;
   padding: 0.25rem;
@@ -256,6 +255,10 @@ header > ul {
   border-radius: 0.25rem;
   background: #fff;
   padding: 0.25rem;
+}
+
+.timetable .empty {
+  visibility: hidden;
 }
 
 .timetable .subject {
@@ -269,10 +272,10 @@ header > ul {
 .timetable .timing {
   font-variant-numeric: tabular-nums;
 }
-.timetable.today-1 .day-1,
-.timetable.today-2 .day-2,
-.timetable.today-3 .day-3,
-.timetable.today-4 .day-4,
-.timetable.today-5 .day-5 {
+.timetable.week-current.today-1 .day-1,
+.timetable.week-current.today-2 .day-2,
+.timetable.week-current.today-3 .day-3,
+.timetable.week-current.today-4 .day-4,
+.timetable.week-current.today-5 .day-5 {
   background: khaki;
 }

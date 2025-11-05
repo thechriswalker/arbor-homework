@@ -240,16 +240,16 @@ header > ul {
 }
 
 .timetable {
+  display: grid;
   width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0.25rem;
 }
-.timetable td,
-.timetable th {
-  text-align: center;
-}
-.timetable td div {
+.timetable div {
   border: 1px solid #333;
   border-radius: 0.25rem;
   background: #fff;
+  padding: 0.25rem;
 }
 
 .timetable .subject {
@@ -263,10 +263,10 @@ header > ul {
 .timetable .timing {
   font-variant-numeric: tabular-nums;
 }
-.timetable.today-1 tr > *:nth-child(1) div,
-.timetable.today-2 tr > *:nth-child(2) div,
-.timetable.today-3 tr > *:nth-child(3) div,
-.timetable.today-4 tr > *:nth-child(4) div,
-.timetable.today-5 tr > *:nth-child(5) div {
+.timetable.today-1 .day-1,
+.timetable.today-2 .day-2,
+.timetable.today-3 .day-3,
+.timetable.today-4 .day-4,
+.timetable.today-5 .day-5 {
   background: khaki;
 }

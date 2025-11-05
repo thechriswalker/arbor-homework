@@ -36,30 +36,32 @@ export default function Homework() {
     return <Loading />;
   }
   return (
-    <Tabs qs="student">
-      {data?.map((data) => {
-        return (
-          <Tab
-            id={data.id.toString()}
-            label={
-              <Avatar
-                img={data.student.img}
-                name={data.student.name}
-                form={data.student.form}
-              />
-            }
-          >
-            <Tabs qs="week">
-              {data.timetable.map((h) => (
-                <Tab id={h.id} label={h.name}>
-                  <Calendar week={h} />
-                </Tab>
-              ))}
-            </Tabs>
-          </Tab>
-        );
-      })}
-    </Tabs>
+    <div class="timetable-section">
+      <Tabs qs="student">
+        {data?.map((data) => {
+          return (
+            <Tab
+              id={data.id.toString()}
+              label={
+                <Avatar
+                  img={data.student.img}
+                  name={data.student.name}
+                  form={data.student.form}
+                />
+              }
+            >
+              <Tabs qs="week">
+                {data.timetable.map((h) => (
+                  <Tab id={h.id} label={h.name}>
+                    <Calendar week={h} />
+                  </Tab>
+                ))}
+              </Tabs>
+            </Tab>
+          );
+        })}
+      </Tabs>
+    </div>
   );
 }
 

@@ -55,9 +55,11 @@ export default function Homework() {
               />
             }
           >
-            {data.homework.map((h) => (
-              <HomeworkItem work={h} key={h.id} />
-            ))}
+            <div class="homework-section">
+              {data.homework.map((h) => (
+                <HomeworkItem work={h} key={h.id} />
+              ))}
+            </div>
           </Tab>
         );
       })}

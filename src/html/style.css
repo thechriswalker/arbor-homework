@@ -124,6 +124,10 @@ header > ul {
   border-radius: 50%;
   border: 2px solid #333;
 }
+
+.homework-section {
+  padding: 0.25rem;
+}
 .homework-card {
   border: 1px solid #666;
   background-color: #ffc;

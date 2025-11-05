@@ -89,38 +89,42 @@ function Calendar({ week }: { week: Week }) {
     });
   }
   return (
-    <div class={cx("timetable", "today-" + today, "week-" + week.id)}>
-      {days.map((label) => (
-        <h3>{label}</h3>
-      ))}
-      {Array.from({ length: maxPeriods }).map((_, periodIndex) => {
-        return (
-          <>
-            {week.days.map((day, j) => {
-              // if the day has the period add it, otherwise add an empty cell
-              // class is day- (j+1) because days start on sunday in JS, and monday here.
-              const data = day[periodIndex];
-              const empty = !data && day.length > 0;
-              return (
-                <div class={cx("day-" + (j + 1), { empty })}>
-                  {data ? (
-                    <>
-                      <p
-                        class="subject"
-                        dangerouslySetInnerHTML={{ __html: data.subject }}
-                      ></p>
-                      <p class="group">{data.group}</p>
-                      <p class="timing">{data.timing}</p>
-                    </>
-                  ) : (
-                    <p class="subject">Nothing ;)</p>
-                  )}
-                </div>
-              );
-            })}
-          </>
-        );
-      })}
+    <div class="tt-wrap">
+      <div class={cx("timetable", "today-" + today, "week-" + week.id)}>
+        {days.map((label) => (
+          <h3>{label}</h3>
+        ))}
+        {Array.from({ length: maxPeriods }).map((_, periodIndex) => {
+          return (
+            <>
+              {week.days.map((day, j) => {
+                // if the day has the period add it, otherwise add an empty cell
+                // class is day- (j+1) because days start on sunday in JS, and monday here.
+                const data = day[periodIndex];
+                const empty = !data && day.length > 0;
+                return (
+                  <div class={cx("item", "day-" + (j + 1), { empty })}>
+                    {data ? (
+                      <>
+                        <p
+                          class="subject"
+                          dangerouslySetInnerHTML={{ __html: data.subject }}
+                        ></p>
+                        <div class="detail">
+                          <p class="group">{data.group}</p>
+                          <p class="timing">{data.timing.split("-")[0]}</p>
+                        </div>
+                      </>
+                    ) : (
+                      <p class="subject">Nothing ;)</p>
+                    )}
+                  </div>
+                );
+              })}
+            </>
+          );
+        })}
+      </div>
     </div>
   );
 }

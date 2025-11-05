@@ -28,12 +28,11 @@ header {
   background-color: #fff;
   border-bottom: 1px solid #999;
 }
-h1 > a {
-  color: #222;
-  text-decoration: none;
-}
-h1 > a:hover {
-  color: cadetblue;
+header a {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 h1,
 header p {
@@ -119,8 +118,8 @@ header > ul {
 }
 
 .avatar img {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   border: 2px solid #333;
 }
@@ -242,21 +241,40 @@ header > ul {
     transform: translateY(15px);
   }
 }
-
+.tt-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .timetable {
   display: grid;
-  grid-template-columns: repeat(5, minmax(8em, 1fr));
+  grid-template-columns: repeat(5, minmax(8rem, 16rem));
   gap: 0.25rem;
   padding: 0.25rem;
+  margin: 0 auto;
   text-align: center;
 }
-.timetable div {
+.timetable div.item {
   border: 1px solid #333;
   border-radius: 0.25rem;
   background: #fff;
   padding: 0.25rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 }
-
+.timetable div.detail {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.timetable .detail p {
+  margin: 0;
+}
+.timetable p {
+  margin: 0.2rem auto;
+}
 .timetable .empty {
   visibility: hidden;
 }
@@ -271,6 +289,7 @@ header > ul {
 }
 .timetable .timing {
   font-variant-numeric: tabular-nums;
+  font-family: monospace;
 }
 .timetable.week-current.today-1 .day-1,
 .timetable.week-current.today-2 .day-2,

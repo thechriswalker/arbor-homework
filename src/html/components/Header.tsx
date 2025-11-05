@@ -25,7 +25,7 @@ export default function Header() {
     <header>
       <ul>
         <li>
-          <h1>ArborThing</h1>
+          <h1>Arbor</h1>
         </li>
         <li class={isTimetable ? "" : "active"}>
           <a href={withTabState("/homework")} title="homework">

@@ -93,13 +93,13 @@ function Calendar({ week }: { week: Week }) {
       {days.map((label) => (
         <h3>{label}</h3>
       ))}
-      {days.map((_, i) => {
+      {Array.from({ length: maxPeriods }).map((_, periodIndex) => {
         return (
           <>
             {week.days.map((day, j) => {
               // if the day has the period add it, otherwise add an empty cell
               // class is day- (j+1) because days start on sunday in JS, and monday here.
-              const data = day[i];
+              const data = day[periodIndex];
               const empty = !data && day.length > 0;
               return (
                 <div class={cx("day-" + (j + 1), { empty })}>

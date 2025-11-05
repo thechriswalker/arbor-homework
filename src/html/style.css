@@ -244,13 +244,14 @@ header > ul {
   width: 100%;
   grid-template-columns: repeat(5, minmax(8em, 1fr));
   gap: 0.25rem;
+  padding: 0.25rem;
+  text-align: center;
 }
 .timetable div {
   border: 1px solid #333;
   border-radius: 0.25rem;
   background: #fff;
   padding: 0.25rem;
-  text-align: center;
 }
 
 .timetable .subject {

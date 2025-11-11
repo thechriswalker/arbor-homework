@@ -5,6 +5,7 @@ import useSWR from "preact-swr";
 import { useEffect, useState } from "preact/hooks";
 import Loading from "../Loading";
 import { cx } from "src/html/util";
+import { getCurrentWeek } from "src/util";
 
 async function loadData() {
   const res = await fetch("/api/timetable");
@@ -80,10 +81,11 @@ function Calendar({ week }: { week: Week }) {
   const today = now.getDay();
   let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   if (week.id === "current") {
+    const { startDate: mondayDate } = getCurrentWeek();
+    const monday = new Date(mondayDate + "T12:00:00");
     days = days.map((x, i) => {
-      const day = i + 1; // JS days are offset by 1.
       const date = new Date(
-        now.getTime() + (today - day) * 86400_000
+        monday.getTime() + i * 86400_000
       ).toLocaleDateString();
       return x + " (" + date + ")";
     });

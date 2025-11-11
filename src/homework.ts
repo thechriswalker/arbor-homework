@@ -24,6 +24,7 @@ function parseHomework(line: string): { subject: string; dueDate: Date } {
 }
 // https://cullompton-community-college.uk.arbor.education/guardians/home-ui/dashboard/student-id/4226?format=javascript
 export const getHomework = createAPIFunction(
+  "homework",
   (studentID: number) =>
     `/guardians/home-ui/dashboard/student-id/${studentID}?format=javascript`,
   extractHomework
@@ -106,6 +107,7 @@ export function extractHomework(resp: any): Array<Homework> {
 
 const HOMEWORK_DETAIL_CACHE_DURATION = 7 * 86400_000;
 export const getHomeworkDetail = createAPIFunction(
+  "homework_detail",
   (homework: Homework) =>
     `/guardians/student-ui/schoolwork-overview/schoolwork-id/${homework.id}?format=javascript`,
   extractHomeworkDetail,

@@ -36,11 +36,13 @@
 
 import { createAPIFunction } from "./arbor";
 import type { Week } from "./types";
+import { getCurrentWeek } from "./util";
 // the UI pulls the current week by default startDate = monday, endDate = friday
 // Then we get a result with the week and 3 weeks either side.
 // the data is in an HTML table... in each week's entry...
 
 export const getCalendarAndTimetable = createAPIFunction(
+  "timetable",
   (studentId: number) => {
     const { startDate, endDate } = getCurrentWeek();
     const body = {
@@ -67,26 +69,6 @@ export const getCalendarAndTimetable = createAPIFunction(
   extractCalendarData,
   7 * 86400_000
 );
-
-function getCurrentWeek() {
-  let endDate = new Date();
-  // endDate = new Date("2025-11-23T12:00:00Z"); // for testing
-
-  // find next friday and work back to monday.
-  while (endDate.getDay() !== 5) {
-    // I hate DST and all that crap, so lets do this in 6 hour chunks...
-    endDate = new Date(endDate.getTime() + 6 * 3600_000);
-  }
-  let startDate = endDate;
-  while (startDate.getDay() !== 1) {
-    startDate = new Date(startDate.getTime() - 6 * 3600_000);
-  }
-
-  return {
-    startDate: startDate.toISOString().slice(0, 10),
-    endDate: endDate.toISOString().slice(0, 10),
-  };
-}
 
 type ResponsePage = {
   start: string;

@@ -41,3 +41,23 @@ export function isPlainObject(o: any) {
   // Most likely a plain Object
   return true;
 }
+
+export function getCurrentWeek() {
+  let endDate = new Date();
+  // endDate = new Date("2025-11-23T12:00:00Z"); // for testing
+
+  // find next friday and work back to monday.
+  while (endDate.getDay() !== 5) {
+    // I hate DST and all that crap, so lets do this in 6 hour chunks...
+    endDate = new Date(endDate.getTime() + 6 * 3600_000);
+  }
+  let startDate = endDate;
+  while (startDate.getDay() !== 1) {
+    startDate = new Date(startDate.getTime() - 6 * 3600_000);
+  }
+
+  return {
+    startDate: startDate.toISOString().slice(0, 10),
+    endDate: endDate.toISOString().slice(0, 10),
+  };
+}

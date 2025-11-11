@@ -24,11 +24,14 @@ function forceOpts(opts: CallOptions | string): CallOptions {
   return opts;
 }
 
-function toCacheableKey(opts: CallOptions) {
-  return `${opts.method} ${opts.endpoint} ${consistentStringify(opts.body)}`;
+function toCacheableKey(key: string, opts: CallOptions) {
+  return `${key} ${opts.method} ${opts.endpoint} ${consistentStringify(
+    opts.body
+  )}`;
 }
 
 export function createAPIFunction<P, T>(
+  fnkey: string,
   endpoint: (p: P) => CallOptions | string,
   parser: (resp: any) => T,
   cacheDuration: number = DEFAULT_CACHE_DURATION
@@ -43,7 +46,7 @@ export function createAPIFunction<P, T>(
     maybeTriggerGarbageCollection();
     // check DB
     const db = await sql;
-    const cacheKey = toCacheableKey(opts);
+    const cacheKey = toCacheableKey(fnkey, opts);
     const now = new Date();
     if (!force) {
       const rows = await db<Array<{ response: string }>>`
@@ -55,12 +58,12 @@ export function createAPIFunction<P, T>(
 
       if (rows.length === 1) {
         // use cache.
-        //console.warn("API: using cache: ", url)
+        console.warn("API: using cache: ", cacheKey);
         return parser(JSON.parse(rows[0]!.response));
       }
     }
     // make request
-    //console.warn("API: making request: ", url)
+    console.warn("API: making request: ", cacheKey);
     let body: BodyInit | null = null;
     if (opts.body) {
       body =

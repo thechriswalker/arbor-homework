@@ -1,10 +1,11 @@
 import sanitize from "sanitize-html";
 import { createAPIFunction } from "./arbor";
 import type { StudentInfo } from "./types";
-// we can acache this a long time!
+// we can cache this a long time!
 const STUDENT_INFO_CACHE = 90 * 86400_000;
 
 export const getStudentInfo = createAPIFunction(
+  "students",
   (studentID: number) =>
     `/guardians/home-ui/dashboard/student-id/${studentID}?format=javascript`,
   extractStudentInfo,

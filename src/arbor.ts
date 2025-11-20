@@ -49,11 +49,13 @@ export function createAPIFunction<P, T>(
     const cacheKey = toCacheableKey(fnkey, opts);
     const now = new Date();
     if (!force) {
+      const expiry = new Date(now.getTime() - cacheDuration);
+      console.log("checking expiry", expiry.toISOString());
       const rows = await db<Array<{ response: string }>>`
             SELECT response 
             FROM api_cache 
             WHERE id = ${cacheKey} 
-              AND expires_at > ${now.toISOString()}
+              AND requested_at > ${expiry.toISOString()}
       `;
 
       if (rows.length === 1) {

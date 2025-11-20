@@ -2,7 +2,7 @@ import sanitize from "sanitize-html";
 import { createAPIFunction } from "./arbor";
 import type { StudentInfo } from "./types";
 // we can cache this a long time!
-const STUDENT_INFO_CACHE = 90 * 86400_000;
+const STUDENT_INFO_CACHE = 1 * 3600_000;
 
 export const getStudentInfo = createAPIFunction(
   "students",

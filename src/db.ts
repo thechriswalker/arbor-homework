@@ -29,7 +29,7 @@ async function createInitialTables() {
   // and make the request after checking expiry
   await db`
         CREATE TABLE IF NOT EXISTS api_cache (
-            id TEXT PRIMARY_KEY NOT NULL,
+            id TEXT PRIMARY KEY NOT NULL,
             requested_at DATETIME NOT NULL,
             expires_at DATETIME NOT NULL,
             status INTEGER NOT NULL,
@@ -43,6 +43,13 @@ async function createInitialTables() {
             last_used DATETIME NOT NULL
         );
     `;
+  await db`
+    CREATE TABLE IF NOT EXISTS profile_pics (
+       id INTEGER PRIMARY KEY NOT NULL,
+       data TEXT NOT NULL,
+       mime TEXT NOT NULL
+    );
+  `;
 }
 
 export const sql = initDeferral.promise;
